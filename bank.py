@@ -1,7 +1,8 @@
 import os
 
 class BankAccount:
-    def __init__(self, account_number, balance=0):
+    def __init__(self, account_holder,account_number, balance=0):
+        self.account_holder = account_holder
         self.account_number = account_number
         self.balance = balance
 
@@ -23,7 +24,7 @@ class BankAccount:
         return self.balance
 
     def __str__(self):
-        return f"Account Number: {self.account_number}\nBalance: {self.balance}"
+        return f"Account Holder: {self.account_holder}\nAccount Number: {self.account_number}\nBalance: {self.balance}"
 
 
 def load_accounts(filename):
@@ -32,8 +33,8 @@ def load_accounts(filename):
         with open(filename, 'r') as file:
             for line in file:
                 try:
-                    account_number, balance = line.strip().split(',')
-                    accounts[account_number] = BankAccount(account_number, float(balance))
+                    account_holder,account_number, balance = line.strip().split(',')
+                    accounts[account_number] = BankAccount(account_holder,account_number, float(balance))
                 except ValueError:
                     print(line.strip())
     return accounts
@@ -42,7 +43,7 @@ def load_accounts(filename):
 def save_accounts(accounts, filename):
     with open(filename, 'w') as file:
         for account_number, account in accounts.items():
-            file.write(f"{account_number},{account.balance}\n")
+            file.write(f"{account.account_holder},{account_number},{account.balance}\n")
 
 def main():
     filename = "accounts.txt"
@@ -57,9 +58,11 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            account_number = input("Enter account number: ")
+            account_holder = input("Enter your name: ")
+            account_number = input("Create account number: ")
             if account_number not in accounts:
-                accounts[account_number] = BankAccount(account_number)
+                new_account = BankAccount(account_holder, account_number)
+                accounts[account_number] = new_account
                 print("Account created successfully!")
             else:
                 print("Account already exists!")
@@ -113,16 +116,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-     
-
-    
- 
-
-        
-
-
-
-
